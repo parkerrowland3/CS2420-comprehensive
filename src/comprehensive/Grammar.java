@@ -69,6 +69,7 @@ public class Grammar {
 																	// non-terminal being defined.
 					}
 			}
+			scan.close();
 		}
 	}
 
