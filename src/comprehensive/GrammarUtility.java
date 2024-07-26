@@ -1,7 +1,9 @@
 package comprehensive;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Scanner;
 /**
  * 
  */
-public class Grammar {
+public class GrammarUtility {
 	// the grammar is represented in a hashMap with keys being non-terminals, and
 	// data being a list of productions
 	// (A production is a line with nonTerminals or terminals separated by one
@@ -23,9 +25,9 @@ public class Grammar {
 	/**
 	 * 
 	 * @param filename
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	public Grammar(String filename) throws FileNotFoundException {
+	public GrammarUtility(String filename) throws IOException {
 		grammar = new HashMap<>();
 		rand = new Random();
 		parseFile(filename);
@@ -38,17 +40,17 @@ public class Grammar {
 	/**
 	 * 
 	 * @param filename
-	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	private void parseFile(String filename) throws FileNotFoundException {
-		try (Scanner scan = new Scanner(new File(filename))) {
+	private void parseFile(String filename) throws IOException {
+		try (BufferedReader bf = new BufferedReader(new FileReader(filename))) {
 			String currentArea = null; // This variable keeps track of which non-terminal definition we are in (i.e.
 										// the string after an opening curly brace is the non-terminal we are defining)
 			boolean isInBrackets = false;
+			String currentLine = null;
 
-			while (scan.hasNextLine()) {
-				String currentLine = scan.nextLine();
-				// TODO Check if grammar is correct
+			while ((currentLine = bf.readLine()) != null) {
+
 				if (currentLine.isEmpty()) // Skip white spaces
 					continue;
 
@@ -69,7 +71,7 @@ public class Grammar {
 																	// non-terminal being defined.
 					}
 			}
-			scan.close();
+			bf.close();
 		}
 	}
 
@@ -82,38 +84,20 @@ public class Grammar {
 		}
 
 		String selectedProduction = productions.get(rand.nextInt(productions.size())); // Choose a random production
-
-		// Split the production by white spaces into individual terminals and
-		// non-terminals put into a basic string array.
-		// (s+ would split based upon any number of white spaces, but a proper grammar
-		// should never have more than one white space between).
-		// A token represents a terminal or non terminal item in a production.
-//        String[] tokens = selectedProduction.split("\\s+"); 
-
+		char currentChar;
 		StringBuilder newPhrase = new StringBuilder();
-//        for (String token : tokens) {
-//            if (token.startsWith("<") && (token.endsWith(">") || token.endsWith(">."))) { 
-//            	// token in a non-terminal
-//            	newPhrase.append(generate(token));
-//            	newPhrase.append(" ");
-//            } else if (token.startsWith("<") && !token.endsWith(">")){ 
-//            	int bracketIndex = token.indexOf(">");
-//            } else {
-//            	newPhrase.append(token).append(" ");
-//            }
-//        }
 
-		char[] prodArray = selectedProduction.toCharArray();
 		boolean inBrackets = false;
 		StringBuilder nonTerm = new StringBuilder();
-		for (int i = 0; i < prodArray.length; i++) {
-			if ((prodArray[i] != '<' && prodArray[i] != '>') && !inBrackets) {
-				newPhrase.append(prodArray[i]);
-			} else if (prodArray[i] == '<' || inBrackets) {
+		for (int i = 0; i < selectedProduction.length(); i++) {
+			currentChar = selectedProduction.charAt(i);
+			if ((currentChar != '<' && currentChar != '>') && !inBrackets) {
+				newPhrase.append(currentChar);
+			} else if (currentChar == '<' || inBrackets) {
 				inBrackets = true;
-				
-				nonTerm.append(prodArray[i]);
-				if (prodArray[i] == '>') {
+
+				nonTerm.append(currentChar);
+				if (selectedProduction.charAt(i) == '>') {
 					inBrackets = false;
 					newPhrase.append(generate(nonTerm.toString()));
 					nonTerm.setLength(0);

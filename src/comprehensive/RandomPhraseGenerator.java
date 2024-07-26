@@ -1,32 +1,35 @@
 package comprehensive;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class RandomPhraseGenerator {
 
-	public static void main(String[] args) throws FileNotFoundException {
-		int numberOfPhrases;
-		String gFileName;
-		Grammar grammar;
-		
-		try {
-			gFileName = args[0];
-			
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+	public static void main(String[] args) {
+		if (args.length != 2) {
+			throw new IllegalArgumentException("Usage: java RandomPhraseGenerator <grammar-file> <number-of-phrases>");
 		}
-		
+
+		String gFileName = args[0];
+		int numberOfPhrases;
+
 		try {
 			numberOfPhrases = Integer.parseInt(args[1]);
-		} catch (Exception e) {
-			throw new IllegalArgumentException();
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("The second argument must be an integer.");
 		}
-		grammar = new Grammar(gFileName);
-		
+
+		GrammarUtility grammar;
+
+		try {
+			grammar = new GrammarUtility(gFileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return; // Exit the program if the grammar file cannot be read
+		}
+
 		for (int i = 0; i < numberOfPhrases; i++) {
 			System.out.println(grammar.generatePhrase());
 		}
-
 	}
 
 }
