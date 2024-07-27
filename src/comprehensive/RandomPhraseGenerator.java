@@ -8,7 +8,7 @@ public class RandomPhraseGenerator {
 		if (args.length != 2) {
 			throw new IllegalArgumentException("Usage: java RandomPhraseGenerator <grammar-file> <number-of-phrases>");
 		}
-
+		
 		String gFileName = args[0];
 		int numberOfPhrases;
 
