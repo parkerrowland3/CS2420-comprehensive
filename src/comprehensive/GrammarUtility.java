@@ -12,20 +12,24 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
+ * This class represents a grammar file parsed into a HashMap for easy
+ * manipulation. It also houses utility functions to generate phrases based off
+ * of the grammar file itself.
  * 
  */
 public class GrammarUtility {
-	// the grammar is represented in a hashMap with keys being non-terminals, and
-	// data being a list of productions
-	// (A production is a line with nonTerminals or terminals separated by one
-	// space).
+
+	// This Map represents the grammar. Each non-terminal acts as a key which is
+	// mapped to a list of its corresponding productions.
 	private Map<String, List<String>> grammar;
 	private Random rand;
 
 	/**
+	 * This is the main constructor used for this class. It parses a given grammar
+	 * file into a HashMap for easy access and manipulation.
 	 * 
-	 * @param filename
-	 * @throws IOException
+	 * @param filename - Location of grammar file.
+	 * @throws IOException - If file cannot be opened.
 	 */
 	public GrammarUtility(String filename) throws IOException {
 		grammar = new HashMap<>();
@@ -33,14 +37,23 @@ public class GrammarUtility {
 		parseFile(filename);
 	}
 
+	/**
+	 * This method uses a left-most derivation to generate a random phrase based off
+	 * of the grammar in the respective instance of this class.
+	 * 
+	 * @return A randomly generated phrase.
+	 */
 	public String generatePhrase() {
 		return generate("<start>");
 	}
 
 	/**
+	 * This method uses a BufferedReader to parse an inputed grammar file into a
+	 * HashMap with non-terminals as keys mapped to a list of their corresponding
+	 * productions. Adheres strictly to the expected layout of a grammar file.
 	 * 
-	 * @param filename
-	 * @throws IOException
+	 * @param filename - Name of grammar file to be parsed.
+	 * @throws IOException - If file cannot be opened.
 	 */
 	private void parseFile(String filename) throws IOException {
 		try (BufferedReader bf = new BufferedReader(new FileReader(filename))) {
@@ -71,10 +84,18 @@ public class GrammarUtility {
 																	// non-terminal being defined.
 					}
 			}
-			bf.close();
+			bf.close(); // Closes file
 		}
 	}
 
+	/**
+	 * Private recursive method used to generate random phrases. It selects a random
+	 * production from the list of productions mapped to a given non-terminal. This
+	 * happens recursively until a production is completed.
+	 * 
+	 * @param nonTerminal
+	 * @return
+	 */
 	private String generate(String nonTerminal) {
 		List<String> productions = grammar.get(nonTerminal); // list of all productions associated with a non-terminal
 																// definition
