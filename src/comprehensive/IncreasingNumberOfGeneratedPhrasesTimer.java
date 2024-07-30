@@ -1,6 +1,7 @@
 package comprehensive;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Template class which can be used as a skeleton for perfoming timing tests
@@ -23,15 +24,15 @@ public class IncreasingNumberOfGeneratedPhrasesTimer {
 	/**
 	 * The main method runs the timing experiment, which prints results to the console.
 	 * @param args
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
 		long startTime, afterTimedCode, afterCompensationLoop;
 		
 		//--------Self initialized variables ---------------
-		Grammar grammar;
+		GrammarUtility grammar;
 		try {
-			grammar = new Grammar("src/comprehensive/assignment_extension_request.g");
+			grammar = new GrammarUtility("src/comprehensive/assignment_extension_request.g");
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		}
