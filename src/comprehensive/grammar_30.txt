@@ -1,0 +1,9 @@
+{
+<start>
+<non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal> <non_terminal>
+}
+{
+<non_terminal>
+terminal
+<non_terminal> terminal
+}
